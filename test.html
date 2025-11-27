@@ -197,7 +197,7 @@
 
     <div class="menu" id="menu">
         <a href="#" class="menu-item" id="homeBtn">ホーム</a>
-        <a href="https://www.apple.com/jp/" class="menu-item" target="_blank">１</a>
+        <a href="bucketlist.html" class="menu-item">やりたいことリスト</a>
         <a href="https://gen1219.github.io/AG-history/" class="menu-item" target="_blank">history</a>
     </div>
 
@@ -265,6 +265,7 @@
 
         window.addEventListener('scroll', () => {
             const scrollY = window.scrollY;
+            const docHeight = document.documentElement.scrollHeight;
             const windowHeight = window.innerHeight;
             
             // 最初の日付の表示
@@ -277,12 +278,15 @@
             }
             
             // 2つ目の日付の表示（3枚目の画像あたりで表示）
-            if (scrollY > windowHeight * 1.5 && scrollY < windowHeight * 2.5) {
+            // スクロール位置が全体の50%〜75%の間で表示
+            const scrollPercent = scrollY / (docHeight - windowHeight);
+            
+            if (scrollPercent > 0.45 && scrollPercent < 0.75) {
                 dateText2.style.opacity = '1';
                 dateText2.classList.remove('hidden');
-                const moveAmount2 = (scrollY - windowHeight * 1.5) * 0.5;
+                const moveAmount2 = (scrollPercent - 0.45) * 500;
                 dateText2.style.transform = `translate(-50%, calc(-50% - ${moveAmount2}px))`;
-            } else if (scrollY >= windowHeight * 2.5) {
+            } else if (scrollPercent >= 0.75) {
                 dateText2.classList.add('hidden');
             } else {
                 dateText2.style.opacity = '0';

@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>やりたいことリスト</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', 'Hiragino Sans', 'Meiryo', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            color: white;
+            font-size: 48px;
+            text-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 18px;
+        }
+
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            color: #667eea;
+            padding: 12px 24px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .back-button:hover {
+            background: white;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .bucket-list {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .list-item {
+            display: flex;
+            align-items: center;
+            padding: 20px;
+            margin-bottom: 15px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .list-item:hover {
+            background: #e9ecef;
+            transform: translateX(10px);
+        }
+
+        .list-item.completed {
+            background: #d4edda;
+            opacity: 0.7;
+        }
+
+        .checkbox {
+            width: 24px;
+            height: 24px;
+            min-width: 24px;
+            border: 3px solid #667eea;
+            border-radius: 6px;
+            margin-right: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .list-item.completed .checkbox {
+            background: #667eea;
+        }
+
+        .list-item.completed .checkbox::after {
+            content: '✓';
+            color: white;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .list-item-text {
+            font-size: 18px;
+            color: #333;
+            flex: 1;
+        }
+
+        .list-item.completed .list-item-text {
+            text-decoration: line-through;
+            color: #6c757d;
+        }
+
+        .category {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+
+        .category.travel {
+            background: #ffeaa7;
+            color: #fdcb6e;
+        }
+
+        .category.experience {
+            background: #dfe6e9;
+            color: #636e72;
+        }
+
+        .category.skill {
+            background: #a29bfe;
+            color: #6c5ce7;
+        }
+
+        .category.life {
+            background: #fab1a0;
+            color: #e17055;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 36px;
+            }
+
+            .bucket-list {
+                padding: 24px;
+            }
+
+            .list-item-text {
+                font-size: 16px;
+            }
+
+            .back-button {
+                padding: 10px 20px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="test.html" class="back-button">← 戻る</a>
+
+    <div class="container">
+        <div class="header">
+            <h1>✨ やりたいことリスト ✨</h1>
+            <p>人生でやってみたいこと</p>
+        </div>
+
+        <div class="bucket-list">
+            <div class="list-item completed" onclick="toggleItem(this)">
+                <div class="checkbox"></div>
+                <div class="list-item-text">
+                    富士山に登る
+                    <span class="category travel">旅行</span>
+                </div>
+            </div>
+
+            <div class="list-item" onclick="toggleItem(this)">
+                <div class="checkbox"></div>
+                <div class="list-item-text">
+                    オーロラを見る
+                    <span class="category travel">旅行</span>
+                </div>
+            </div>
+
+            <div class="list-item" onclick="toggleItem(this)">
+                <div class="checkbox"></div>
+                <div class="list-item-text">
+                    スカイダイビングに挑戦
+                    <span class="category experience">体験</span>
+                </div>
+            </div>
+
+            <div class="list-item" onclick="toggleItem(this)">
+                <div class="checkbox"></div>
+                <div class="list-item-text">
+                    英語をペラペラに話せるようになる
+                    <span class="category skill">スキル</span>
+                </div>
+            </div>
+
+            <div class="list-item completed" onclick="toggleItem(this)">
+                <div class="checkbox"></div>
+                <div class="list-item-text">
+                    本を100冊読む
+                    <span class="category skill">スキル</span>
+                </div>
+            </div>
+
+            <div class="list-item" onclick="toggleItem(this)">
+                <div class="checkbox"></div>
+                <div class="list-item-text">
+                    海外で1ヶ月暮らす
+                    <span class="category life">生活</span>
+                </div>
+            </div>
+
+            <div class="list-item" onclick="toggleItem(this)">
+                <div class="checkbox"></div>
+                <div class="list-item-text">
+                    楽器を演奏できるようになる
+                    <span class="category skill">スキル</span>
+                </div>
+            </div>
+
+            <div class="list-item" onclick="toggleItem(this)">
+                <div class="checkbox"></div>
+                <div class="list-item-text">
+                    世界一周旅行
+                    <span class="category travel">旅行</span>
+                </div>
+            </div>
+
+            <div class="list-item" onclick="toggleItem(this)">
+                <div class="checkbox"></div>
+                <div class="list-item-text">
+                    マラソン大会に出場
+                    <span class="category experience">体験</span>
+                </div>
+            </div>
+
+            <div class="list-item" onclick="toggleItem(this)">
+                <div class="checkbox"></div>
+                <div class="list-item-text">
+                    自分の家を持つ
+                    <span class="category life">生活</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleItem(element) {
+            element.classList.toggle('completed');
+        }
+    </script>
+</body>
+</html>
