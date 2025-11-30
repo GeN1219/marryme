@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2017-18年</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #FFE4E9 0%, #FFC0CB 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-family: 'Arial', sans-serif;
+            transition: background 0.3s ease;
+            z-index: 1000;
+        }
+
+        .back-button:hover {
+            background: rgba(0, 0, 0, 0.7);
+        }
+
+        .header {
+            text-align: center;
+            padding: 60px 20px 40px;
+        }
+
+        .header h1 {
+            font-size: 48px;
+            color: #764ba2;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .header p {
+            font-size: 20px;
+            color: #666;
+        }
+
+        .timeline {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .timeline-item {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 60px;
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .timeline-item:nth-child(even) {
+            flex-direction: row-reverse;
+        }
+
+        .timeline-date {
+            min-width: 150px;
+            text-align: right;
+            padding-top: 10px;
+        }
+
+        .timeline-item:nth-child(even) .timeline-date {
+            text-align: left;
+        }
+
+        .timeline-date h3 {
+            font-size: 24px;
+            color: #764ba2;
+            margin-bottom: 5px;
+        }
+
+        .timeline-date p {
+            color: #999;
+            font-size: 14px;
+        }
+
+        .timeline-content {
+            flex: 1;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+
+
+        .timeline-content h4 {
+            font-size: 22px;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .timeline-content p {
+            line-height: 1.8;
+            color: #666;
+            font-size: 16px;
+        }
+
+        .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .photo-grid img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+
+        .photo-grid img:hover {
+            transform: scale(1.05);
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 32px;
+            }
+
+            .timeline-item {
+                flex-direction: column !important;
+                gap: 15px;
+            }
+
+            .timeline-date {
+                text-align: left !important;
+            }
+
+            .photo-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="../index.html" class="back-button">← 戻る</a>
+
+    <div class="header">
+        <h1>2017-18年</h1>
+        <p>　</p>
+    </div>
+
+    <div class="timeline">
+        <div class="timeline-item">
+            <div class="timeline-date">
+                <h3>2017.11.15</h3>
+                <p>Start</p>
+            </div>
+            <div class="timeline-content">
+                <h4>Start</h4>
+                <p>修学旅行、ハウステンボスが始まりだったかな。
+                    そこがきっかえでLINEで色々話して、仲良くなったね。
+                    LINEでの告白でいいのかな、、って悩んでたけど、受け入れてくれてありがとう。
+                    ここまで長く続くなんて思わなかったし、まさか結婚まで考えるようになるなんて思いませんでした。
+                    <br>
+                    でも、彩乃と出会えて本当に嬉しいです。
+                </p>
+                <!-- <div class="photo-grid">
+                    <img src="pic/AG.png" alt="出会いの写真">
+                </div> -->
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <div class="timeline-date">
+                <h3>2017.12</h3>
+                <p>first Xmas</p>
+            </div>
+            <div class="timeline-content">
+                <h4>初めてのクリスマス</h4>
+                <p>付き合ってすぐに誕生日とクリスマスでごめんなさいでした。色々大変だったよね。笑
+                    綺麗なイルミネーション、お花の数々、その中で撮ったチップとデールのぬいぐるみの写真。
+                    この写真はお気に入りです！！
+                </p>
+                <div class="photo-grid">
+                    <img src="pic/nabana1.JPG" alt="なばな1">
+                    <img src="pic/nabana2.JPG" alt="なばな2">
+                </div>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <div class="timeline-date">
+                <h3>2018.02.14</h3>
+                <p>first Valentine</p>
+            </div>
+            <div class="timeline-content">
+                <h4>初めてのバレンタイン</h4>
+                <p>初めてのバレンタイン。写真残ってるよ！！<br>
+                    最近は食べれてないけど、彩乃のこのブラウニー大好き。
+                    彩乃のクッキーも好きだけど、ブラウニーの方が好き！！<br>
+                    あとこの時の、小さな手紙。彩乃は気づいてないかもしれないけど、
+                    ずっと財布に入れて持ち歩いてます。お守りです。
+                </p>
+                <div class="photo-grid">
+                    <img src="pic/firstchoko.jpg" alt="choco">
+                </div>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <div class="timeline-date">
+                <h3>2018.04.04</h3>
+                <p>first Disney</p>
+            </div>
+            <div class="timeline-content">
+                <h4>初めてのディズニーデート</h4>
+                <p>おれが選んだ青色のペアルックの服着てディズニーデート。
+                    そう考えるとこの服もほぼ８年目なんだね。長持ちしてるね。笑<br>
+                    歩き疲れてベンチで休んだり、ステラルーのお揃いのキーホルダー買ったり。
+                    たくさん写真撮って、その写真は今もずっと記憶に残ってて、凄くいい思い出の一つです。
+                </p>
+                <div class="photo-grid">
+                    <img src="pic/20180404.JPG" alt="ディズニー1">
+                    <img src="pic/20180405.JPG" alt="ディズニー2">
+                </div>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <div class="timeline-date">
+                <h3>2018.08.25</h3>
+                <p>first fireworks</p>
+            </div>
+            <div class="timeline-content">
+                <h4>初めての花火大会</h4>
+                <p>彩乃の浴衣姿とっても可愛い。なんで彩乃が浴衣着て準備凄くしてくれてるのに、この人は部屋着みたいな格好なんなんでしょうか。ごめんね。
+                    長良川の花火大会、有料化になったり、しょぼくなったりで最近行ってないね。浴衣はまた見てみたいな！浴衣デートしたいね。<br>
+                    まともな花火大会の写真がなかったから、2018年5頃に観に行ったハンドボールの試合のお気に入りの写真を載せとくね！
+                </p>
+                <div class="photo-grid">
+                    <img src="pic/fire1.JPG" alt="夏1">
+                    <img src="pic/1.JPG" alt="?">
+                </div>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <div class="timeline-date">
+                <h3>おまけ</h3>
+                <p>pictures</p>
+            </div>
+            <div class="timeline-content">
+                <h4>おまけの写真</h4>
+                <p>ディズニーの思い出の画角。<br>
+                    初めてのプリクラ。<br>
+                    修学旅行の女子部屋。（メガネ嫌だ）
+                </p>
+                <div class="photo-grid">
+                    <img src="pic/memo1.JPG" alt="おまけ1">
+                    <img src="pic/memo2.JPG" alt="おまけ2">
+                    <img src="pic/memo3.JPG" alt="おまけ3">
+                </div>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>

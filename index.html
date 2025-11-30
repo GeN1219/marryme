@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2017.11.15</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            overflow-x: hidden;
+            background: #FFE4E9;
+            padding: 40px 0;
+        }
+
+        .days-counter {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 10px 20px;
+            border-radius: 5px;
+        }
+
+        .hamburger {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            z-index: 1000;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 5px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 6px;
+            padding: 8px;
+            transition: background 0.3s ease;
+        }
+
+        .hamburger:hover {
+            background: rgba(0, 0, 0, 0.7);
+        }
+
+        .hamburger span {
+            width: 100%;
+            height: 3px;
+            background: white;
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(7px, 7px);
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -7px);
+        }
+
+        .menu {
+            position: fixed;
+            top: 0;
+            right: -300px;
+            width: 300px;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 999;
+            transition: right 0.3s ease;
+            padding-top: 80px;
+        }
+
+        .menu.active {
+            right: 0;
+        }
+
+        .menu-item {
+            display: block;
+            color: white;
+            text-decoration: none;
+            padding: 20px 30px;
+            font-size: 24px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            transition: background 0.3s ease;
+        }
+
+        .menu-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .date-overlay {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 120px;
+            font-weight: bold;
+            color: white;
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            z-index: 10;
+            pointer-events: none;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        .date-overlay.hidden {
+            opacity: 0;
+            transform: translate(-50%, -150%);
+        }
+
+        .gallery {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .image-container {
+            width: 80%;
+            max-width: 600px;
+            margin: 60px auto;
+            position: relative;
+        }
+
+        .image-container:nth-child(odd) {
+            margin-left: 5%;
+            transform: rotate(-2deg);
+        }
+
+        .image-container:nth-child(even) {
+            margin-left: auto;
+            margin-right: 5%;
+            transform: rotate(2deg);
+        }
+
+        .image-container img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border: 8px solid #ADD8E6;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .image-container:hover img {
+            transform: scale(1.02);
+        }
+
+        .coming-soon-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .coming-soon-link {
+            width: 100%;
+            text-decoration: none;
+        }
+
+        .coming-soon-box {
+            width: 100%;
+            aspect-ratio: 4/3;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: 8px solid #ADD8E6;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+
+        .coming-soon-box:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .coming-soon-box p {
+            font-size: 48px;
+            font-weight: bold;
+            color: white;
+            text-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            letter-spacing: 2px;
+        }
+
+        @media (max-width: 768px) {
+            .days-counter {
+                font-size: 18px;
+                padding: 8px 15px;
+            }
+
+            .date-overlay {
+                font-size: 60px;
+            }
+
+            .image-container {
+                width: 90%;
+            }
+
+            .image-container:nth-child(odd) {
+                margin-left: 2%;
+            }
+
+            .image-container:nth-child(even) {
+                margin-right: 2%;
+            }
+
+            .image-container a {
+            display: block;
+            cursor: pointer;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="days-counter" id="daysCounter"></div>
+
+    <div class="hamburger" id="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+
+    <div class="menu" id="menu">
+        <a href="#" class="menu-item" id="homeBtn">ホーム</a>
+        <a href="bucketlist.html" class="menu-item">やりたいことリスト</a>
+        <a href="https://gen1219.github.io/AG-history/" class="menu-item" target="_blank">history</a>
+    </div>
+
+    <div class="date-overlay" id="dateText1">2017.11.15</div>
+    <div class="date-overlay" id="dateText2" style="opacity: 0;">2026.1.25</div>
+
+    <div class="gallery">
+    <div class="image-container">
+        <a href="memory/2017-18.html">
+            <img src="pic/2017-2018.JPG" alt="Image 1">
+        </a>
+    </div>
+
+        <div class="image-container">
+            <img src="pic/IMG_5140.JPG" alt="Image 2">
+        </div>
+
+        <div class="image-container">
+            <img src="pic/sc1.PNG" alt="Image 3">
+        </div>
+
+        <div class="image-container">
+            <img src="pic/sc2.PNG" alt="Image 4">
+        </div>
+
+        <div class="image-container">
+            <img src="pic/image5.jpg" alt="Image 5">
+        </div>
+
+        <div class="image-container">
+            <img src="pic/image6.jpg" alt="Image 6">
+        </div>
+
+        <div class="image-container">
+            <img src="pic/image7.jpg" alt="Image 7">
+        </div>
+
+        <div class="image-container">
+            <img src="pic/image8.jpg" alt="Image 8">
+        </div>
+
+        <!-- <div class="image-container">
+            <img src="pic/image9.jpg" alt="Image 9">
+        </div> -->
+
+        <div class="image-container coming-soon-container">
+            <a href="letter.html" class="coming-soon-link">
+                <div class="coming-soon-box">
+                    <p>coming soon</p>
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <script>
+        const dateText1 = document.getElementById('dateText1');
+        const dateText2 = document.getElementById('dateText2');
+        const hamburger = document.getElementById('hamburger');
+        const menu = document.getElementById('menu');
+        const homeBtn = document.getElementById('homeBtn');
+        const daysCounter = document.getElementById('daysCounter');
+
+        // 日数計算
+        function calculateDays() {
+            const startDate = new Date('2017-11-15');
+            const today = new Date();
+            const diffTime = today - startDate;
+            const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+            daysCounter.textContent = `${diffDays}days`;
+        }
+
+        calculateDays();
+
+        // ハンバーガーメニューの開閉
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            menu.classList.toggle('active');
+        });
+
+        // ホームボタンでページトップへ
+        homeBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            hamburger.classList.remove('active');
+            menu.classList.remove('active');
+        });
+
+        // メニュー外をクリックしたら閉じる
+        document.addEventListener('click', (e) => {
+            if (!hamburger.contains(e.target) && !menu.contains(e.target)) {
+                hamburger.classList.remove('active');
+                menu.classList.remove('active');
+            }
+        });
+
+        window.addEventListener('scroll', () => {
+            const scrollY = window.scrollY;
+            const docHeight = document.documentElement.scrollHeight;
+            const windowHeight = window.innerHeight;
+            
+            // 最初の日付の表示
+            if (scrollY > windowHeight * 0.5) {
+                dateText1.classList.add('hidden');
+            } else {
+                dateText1.classList.remove('hidden');
+                const moveAmount = scrollY * 0.5;
+                dateText1.style.transform = `translate(-50%, calc(-50% - ${moveAmount}px))`;
+            }
+            
+            // 2つ目の日付の表示（5枚目の画像あたりで表示）
+            const scrollPercent = scrollY / (docHeight - windowHeight);
+            
+            if (scrollPercent > 0.45 && scrollPercent < 0.85) {
+                dateText2.style.opacity = '1';
+                dateText2.classList.remove('hidden');
+                const moveAmount2 = (scrollPercent - 0.45) * 500;
+                dateText2.style.transform = `translate(-50%, calc(-50% - ${moveAmount2}px))`;
+            } else if (scrollPercent >= 0.75) {
+                dateText2.classList.add('hidden');
+            } else {
+                dateText2.style.opacity = '0';
+            }
+        });
+    </script>
+</body>
+</html>

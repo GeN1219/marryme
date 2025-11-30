@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>大切な君へ</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', 'Times New Roman', serif;
+            background: linear-gradient(135deg, #FFE4E9 0%, #FFC0CB 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-family: 'Arial', sans-serif;
+            transition: background 0.3s ease;
+            z-index: 1000;
+        }
+
+        .back-button:hover {
+            background: rgba(0, 0, 0, 0.7);
+        }
+
+        .letter-container {
+            max-width: 800px;
+            width: 100%;
+            background: white;
+            padding: 60px 50px;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+            position: relative;
+            animation: fadeIn 1s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .letter-header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #FFB6C1;
+        }
+
+        .letter-header h1 {
+            font-size: 36px;
+            color: #764ba2;
+            margin-bottom: 10px;
+            font-weight: normal;
+        }
+
+        .letter-date {
+            color: #999;
+            font-size: 16px;
+            font-style: italic;
+        }
+
+        .letter-content {
+            line-height: 2;
+            font-size: 18px;
+            color: #333;
+            text-align: left;
+        }
+
+        .letter-content p {
+            margin-bottom: 30px;
+            text-indent: 1em;
+        }
+
+        .letter-content p.no-indent {
+            text-indent: 0;
+        }
+
+        .signature {
+            text-align: right;
+            margin-top: 50px;
+            font-size: 20px;
+            font-style: italic;
+            color: #764ba2;
+        }
+
+        .heart-decoration {
+            position: absolute;
+            font-size: 24px;
+            opacity: 0.3;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .heart-decoration:nth-child(1) {
+            top: 30px;
+            right: 30px;
+            animation-delay: 0s;
+        }
+
+        .heart-decoration:nth-child(2) {
+            bottom: 30px;
+            left: 30px;
+            animation-delay: 1s;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .question-section {
+            margin-top: 60px;
+            padding: 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 10px;
+            text-align: center;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.02);
+            }
+        }
+
+        .question-section h2 {
+            color: white;
+            font-size: 32px;
+            margin-bottom: 20px;
+            font-weight: normal;
+        }
+
+        .answer-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 30px;
+        }
+
+        .answer-button {
+            padding: 15px 40px;
+            font-size: 20px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Arial', sans-serif;
+            font-weight: bold;
+        }
+
+        .yes-button {
+            background: white;
+            color: #764ba2;
+        }
+
+        .yes-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 10px 30px rgba(255, 255, 255, 0.5);
+        }
+
+        .no-button {
+            background: rgba(255, 255, 255, 0.3);
+            color: white;
+            position: relative;
+        }
+
+        .no-button:hover {
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        .celebration {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .celebration.active {
+            display: flex;
+        }
+
+        .celebration-content {
+            text-align: center;
+            color: white;
+            animation: celebrationFadeIn 1s ease-in;
+        }
+
+        @keyframes celebrationFadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .celebration-content h1 {
+            font-size: 64px;
+            margin-bottom: 30px;
+        }
+
+        .celebration-content p {
+            font-size: 28px;
+            font-family: 'Arial', sans-serif;
+        }
+
+        @media (max-width: 768px) {
+            .letter-container {
+                padding: 40px 30px;
+            }
+
+            .letter-header h1 {
+                font-size: 28px;
+            }
+
+            .letter-content {
+                font-size: 16px;
+            }
+
+            .question-section h2 {
+                font-size: 24px;
+            }
+
+            .answer-buttons {
+                flex-direction: column;
+            }
+
+            .answer-button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="index.html" class="back-button">← 戻る</a>
+
+    <div class="letter-container">
+        <div class="heart-decoration">💕</div>
+        <div class="heart-decoration">💕</div>
+
+        <div class="letter-header">
+            <h1>彩乃 へ</h1>
+            <p class="letter-date">2025年1月25日</p>
+        </div>
+
+        <div class="letter-content">
+            <p>
+                結婚しましょう。結婚してください。
+            </p>
+
+            <p>
+                お待たせしました。遅くなってごめんね。付き合ってからおよそ3000日が経ちます。すごくあっという間に時間が過ぎてしまいます。
+                社会人になって一気に時間が進むのが早くなって焦りを感じる日々です。社会人ももう３年目が終わってしまうかと思うと早過ぎるよね。
+                だからこそプロポーズ、結婚が遅くなってしまってごめんなさい。彩乃は周りがどんどん結婚していって、いろんな人から結婚はまだなの？って聞かれて色々思うことがあったと思います。
+                自分なりの準備をしてからプロポーズしたかったので、時間がかかってしまいました。本当にごめんなさい。
+            </p>
+
+            <p>
+                今日は初めての試みで、彩乃に行き先を言わずに連れ出しました。
+                プロポーズの場所は色々考えました。１２球場を制覇したタイミングのエスコンフィールド、凄く無難に家、上海のディズニーでもタイミング的には良かったかな。
+                名古屋の良さそうなホテルとか、あとはハウステンボスとかね。
+                最終的にディズニーランドホテルにしました。チップとデールの婚約指輪を渡したかった。それに合う場所を考えに考えた結果、ここになりました。
+                完全に自己満足なプロポーズで、彩乃の思い描いていた形とは違ったかもしれないけど、喜んでくれたら嬉しいです。
+                彩乃の周りの友達がどんな形のプロポーズをしてもらってるかは分からない。引けを取らないプロポーズにはしたかった。
+                でも派手なプロポーズは性に合ってないし、かといって地味なプロポーズは嫌だった。
+                人生に一度きりのプロポーズだから、思い出に残るプロポーズにしたかった。出来たかな？
+            </p>
+
+            <p>
+                婚約指輪は要らないって言ってたけど、婚約指輪がないプロポーズは寂しいよ。
+                バレないようにこっそり準備しました。着けてもいいし、飾るのもいいし。お好きに使ってください。
+                入籍日は「2026年3月14日」にしようかなって思ってます。円周率で割り切れないから良いって、彩乃が言ってた。
+                それまでにやることは両家の顔合わせ、挨拶と、結婚指輪を買いに行くことかな。
+                全然時間なくてごめんなさい。彩乃の誕生日までには結婚したいよね。
+                結婚式はまた落ち着いたらやりましょう。家建てるのが先かな？
+            </p>
+
+            <p>
+                そんなにすぐに生活は変わらないと思うけど、これからは１人の人生じゃなくて２人一緒に歩んでいく人生です。
+                これからも彩乃と２人で色々な思い出を作っていきたいし、色々なところに旅行に行きたいです。
+                家事や料理の心配はしなくてもいいです。今まで以上に頑張ります。
+                もちろん仕事も今までの３倍頑張ります。
+                一つだけお願いがあります。金銭感覚、お金遣いは気をつけては行くけど、すぐには治らないと思う。
+                そこに関しては彩乃から厳しく言って欲しいです。よろしくお願いします。
+            </p>
+
+            <p>
+                彩乃。大好きだよ。これからも末長く一緒に居てください。
+                改めて、結婚してください。よろしくお願いします。
+            </p>
+
+            <div class="signature">
+                玄　より
+            </div>
+        </div>
+
+        <div class="question-section">
+            <h2>結婚してください</h2>
+            <div class="answer-buttons">
+                <button class="answer-button yes-button" onclick="handleYes()">はい ♥</button>
+                <button class="answer-button no-button" id="noButton" onclick="handleNo()">いいえ</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="celebration" id="celebration">
+        <div class="celebration-content">
+            <h1>🎉 ありがとう！ 🎉</h1>
+            <p>これから二人で、素敵な未来を作っていこうね</p>
+        </div>
+    </div>
+
+    <script>
+        const daysCounter = document.getElementById('daysCounter');
+
+        // 日数計算
+        function calculateDays() {
+            const startDate = new Date('2017-11-15');
+            const today = new Date();
+            const diffTime = today - startDate;
+            const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+            daysCounter.textContent = `${diffDays}`;
+        }
+
+        calculateDays();
+
+        function handleYes() {
+            const celebration = document.getElementById('celebration');
+            celebration.classList.add('active');
+            
+            // 紙吹雪エフェクト
+            for (let i = 0; i < 50; i++) {
+                createConfetti();
+            }
+        }
+
+        function handleNo() {
+            const noButton = document.getElementById('noButton');
+            const randomX = Math.random() * (window.innerWidth - 200);
+            const randomY = Math.random() * (window.innerHeight - 100);
+            
+            noButton.style.position = 'fixed';
+            noButton.style.left = randomX + 'px';
+            noButton.style.top = randomY + 'px';
+            noButton.style.transition = 'all 0.3s ease';
+        }
+
+        function createConfetti() {
+            const confetti = document.createElement('div');
+            confetti.style.position = 'fixed';
+            confetti.style.left = Math.random() * window.innerWidth + 'px';
+            confetti.style.top = '-20px';
+            confetti.style.fontSize = '30px';
+            confetti.textContent = ['❤️', '💕', '💖', '💗', '🌸', '🎀'][Math.floor(Math.random() * 6)];
+            confetti.style.zIndex = '3000';
+            confetti.style.pointerEvents = 'none';
+            
+            document.body.appendChild(confetti);
+            
+            const duration = 3000 + Math.random() * 2000;
+            const startTime = Date.now();
+            
+            function animate() {
+                const elapsed = Date.now() - startTime;
+                const progress = elapsed / duration;
+                
+                if (progress < 1) {
+                    confetti.style.top = (progress * window.innerHeight) + 'px';
+                    confetti.style.transform = `rotate(${progress * 360 * 3}deg)`;
+                    confetti.style.opacity = 1 - progress;
+                    requestAnimationFrame(animate);
+                } else {
+                    confetti.remove();
+                }
+            }
+            
+            animate();
+        }
+    </script>
+</body>
+</html>
