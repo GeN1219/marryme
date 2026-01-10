@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>2019年</title>
+    <title>2024年</title>
     <style>
         * {
             margin: 0;
@@ -146,6 +146,20 @@
             transform: scale(1.05);
         }
 
+        .photo-grid img.full-image {
+            object-fit: contain;
+            max-height: 500px;
+            height: auto;
+        }
+
+        .photo-grid img.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .photo-grid.two-columns {
+            grid-template-columns: 1fr 1fr;
+        }
+
         @media (max-width: 768px) {
             .header h1 {
                 font-size: 32px;
@@ -170,104 +184,134 @@
     <a href="../index.html" class="back-button">← 戻る</a>
 
     <div class="header">
-        <h1>2019年</h1>
+        <h1>2024年</h1>
         <p>　</p>
     </div>
 
     <div class="timeline">
         <div class="timeline-item">
             <div class="timeline-date">
-                <h3>2017.11.15</h3>
-                <p>Start</p>
+                <h3>2024.01.07</h3>
+                <p>Happy New Year</p>
             </div>
             <div class="timeline-content">
-                <h4>Start</h4>
-                <p>修学旅行、ハウステンボスが始まりだったかな。
-                    そこがきっかえでLINEで色々話して、仲良くなったね。
-                    LINEでの告白でいいのかな、、って悩んでたけど、受け入れてくれてありがとう。
-                    ここまで長く続くなんて思わなかったし、まさか結婚まで考えるようになるなんて思いませんでした。
+                <h4>あけおめ！</h4>
+                <p>
+                    なんとなく、みっぱらの写真！
+                    なぜか食欲爆発して食べ過ぎたパステル！
+                </p>
+                <div class="photo-grid">
+                    <img src="pic/2024/0107.JPG" alt="みっぱら１">
+                    <img src="pic/2024/0107_02.jpg" alt="みっぱら２">
+                </div>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <div class="timeline-date">
+                <h3>2024.01</h3>
+                <p>SPY×FAMILY</p>
+            </div>
+            <div class="timeline-content">
+                <h4>SPY×FAMILY</h4>
+                <p>
+                    1月17日　劇場版SPY×FAMILY！！ <br>
+                    3月23日　SPY×FAMILY展　in栄！！ <br>
+                    10月5日　SPY×FAMILYワクワクパーク　in金山！！ <br>
+                    振り返ってみるとSPY×FAMILY過ぎた１年だった。
+                </p>
+                <div class="photo-grid two-columns">
+                    <img src="pic/2024/SF_0117.JPG" alt="SF1">
+                    <img src="pic/2024/SF_0323.JPG" alt="SF2">
+                    <img src="pic/2024/SF_1005.jpg" alt="SF3" class="full-image full-width">
+                </div>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <div class="timeline-date">
+                <h3>2024.04.09</h3>
+                <p>birth day</p>
+            </div>
+            <div class="timeline-content">
+                <h4>彩乃の誕生日</h4>
+                <p>
+                    当年もお誕生日おめでとう！！<br>
+                    誕生日プレゼントはApple Watch！今では彩乃の生活必需品になってる感じで毎日使ってくれてありがとう。
+                    使いこなせてるかな？
                     <br>
-                    でも、彩乃と出会えて本当に嬉しいです。
-                </p>
-                <!-- <div class="photo-grid">
-                    <img src="pic/AG.png" alt="出会いの写真">
-                </div> -->
-            </div>
-        </div>
-
-        <div class="timeline-item">
-            <div class="timeline-date">
-                <h3>2017.12</h3>
-                <p>first Xmas</p>
-            </div>
-            <div class="timeline-content">
-                <h4>初めてのクリスマス</h4>
-                <p>付き合ってすぐに誕生日とクリスマスでごめんなさいでした。色々大変だったよね。笑
-                    綺麗なイルミネーション、お花の数々、その中で撮ったチップとデールのぬいぐるみの写真。
-                    この写真はお気に入りです！！
+                    欲しいものは行ってくれたけど、夜ご飯（ディナー）は相変わらず焼肉で俺が行きたいとこになってる気がする、、<br>
+                    行きたいとこ、食べたいものがあったら言うんだよ！せっかくなら良いもの食べよう！（それともお家でゆっくりしたいですか、、？）
                 </p>
                 <div class="photo-grid">
-                    <img src="pic/nabana1.JPG" alt="なばな1">
-                    <img src="pic/nabana2.JPG" alt="なばな2">
+                    <img src="pic/2024/0409_01.JPG" alt="bd1">
+                    <img src="pic/2024/0409_02.JPG" alt="bd2">
                 </div>
             </div>
         </div>
 
         <div class="timeline-item">
             <div class="timeline-date">
-                <h3>2018.02.14</h3>
-                <p>first Valentine</p>
+                <h3>2024.08.03</h3>
+                <p>Fukuoka</p>
             </div>
             <div class="timeline-content">
-                <h4>初めてのバレンタイン</h4>
-                <p>初めてのバレンタイン。写真残ってるよ！！<br>
-                    最近は食べれてないけど、彩乃のこのブラウニー大好き。
-                    彩乃のクッキーも好きだけど、ブラウニーの方が好き！！<br>
-                    あとこの時の、小さな手紙。彩乃は気づいてないかもしれないけど、
-                    ずっと財布に入れて持ち歩いてます。お守りです。
+                <h4>福岡</h4>
+                <p>
+                    PayPayドームの看板工事中で、ここもまた行かなきゃだね！！😅<br>
+                    ヒルトン、無料アップグレードでまさかのスイートルーム！！<br>
+                    すごい体験だった、、！
                 </p>
                 <div class="photo-grid">
-                    <img src="pic/firstchoko.jpg" alt="choco">
+                    <img src="pic/2024/0803_01.JPG" alt="福岡1">
+                    <img src="pic/2024/0803_02.JPG" alt="福岡2">
+                    <img src="pic/2024/0803_04.jpg" alt="福岡3">
                 </div>
             </div>
         </div>
 
         <div class="timeline-item">
             <div class="timeline-date">
-                <h3>2018.04.04</h3>
-                <p>first Disney</p>
+                <h3>2024.09.15</h3>
+                <p>Sendai</p>
             </div>
             <div class="timeline-content">
-                <h4>初めてのディズニーデート</h4>
-                <p>おれが選んだ青色のペアルックの服着てディズニーデート。
-                    そう考えるとこの服もほぼ８年目なんだね。長持ちしてるね。笑<br>
-                    歩き疲れてベンチで休んだり、ステラルーのお揃いのキーホルダー買ったり。
-                    たくさん写真撮って、その写真は今もずっと記憶に残ってて、凄くいい思い出の一つです。
+                <h4>仙台</h4>
+                <p>
+                    雨で試合流れちゃってどうなるかと思ったけど、無事試合見れてよかった！<br>
+                    牛タンも並んだけど美味しかったね！<br>
+                    仙台もまた行きたい！！
                 </p>
                 <div class="photo-grid">
-                    <img src="pic/20180404.JPG" alt="ディズニー1">
-                    <img src="pic/20180405.JPG" alt="ディズニー2">
+                    <img src="pic/2024/0915_01.JPG" alt="仙台１">
+                    <img src="pic/2024/0915_02.JPG" alt="仙台２">
+                    <img src="pic/2024/0915_03.JPG" alt="仙台３">
                 </div>
             </div>
         </div>
 
+
         <div class="timeline-item">
             <div class="timeline-date">
-                <h3>2018.08.25</h3>
-                <p>first fireworks</p>
+                <h3>2024.11.15</h3>
+                <p>7th anniversary</p>
             </div>
             <div class="timeline-content">
-                <h4>初めての花火大会</h4>
-                <p>彩乃の浴衣姿とっても可愛い。なんで彩乃が浴衣着て準備凄くしてくれてるのに、この人は部屋着みたいな格好なんなんでしょうか。ごめんね。
-                    長良川の花火大会、有料化になったり、しょぼくなったりで最近行ってないね。浴衣はまた見てみたいな！浴衣デートしたいね。<br>
-                    まともな花火大会の写真がなかったから、2018年5頃に観に行ったハンドボールの試合のお気に入りの写真を載せとくね！
+                <h4>鎌倉</h4>
+                <p>
+                    ７周年記念旅行は鎌倉・江ノ島！<br>
+                    鎌倉でいっぱい食べ歩き、浜辺で海を感じて、江ノ島まで１時間半のウォーキング！<br>
+                    江ノ電すごい人だったけど一回行ってみたかったからありがとう！<br>
+                    江ノ島は恒例の水族館！！日本中の水族館行こうね！！笑
                 </p>
                 <div class="photo-grid">
-                    <img src="pic/fire1.JPG" alt="夏1">
-                    <img src="pic/1.JPG" alt="?">
+                    <img src="pic/2024/1115_01.JPG" alt="鎌倉１">
+                    <img src="pic/2024/1115_02.JPG" alt="鎌倉２">
+                    <img src="pic/2024/1115_03.JPG" alt="鎌倉３">
                 </div>
             </div>
         </div>
+
 
         <div class="timeline-item">
             <div class="timeline-date">
@@ -276,14 +320,19 @@
             </div>
             <div class="timeline-content">
                 <h4>おまけの写真</h4>
-                <p>ディズニーの思い出の画角。<br>
-                    初めてのプリクラ。<br>
-                    修学旅行の女子部屋。（メガネ嫌だ）
+                <p>
+                    会社の招待でコートまで入れてもらったバスケの試合！ダンクは届かないよ笑<br>
+                    福岡への飛行機！彩乃初めての飛行機だと思ったのに直前に初めて奪われた、、笑<br>
+                    <br>
+                    そして何より同棲開始です！！坂井田家様、色々家具家電のサポートありがとうございました。
+                    <br>
+                    大好きな彩乃と一緒にいれる楽しみさ９割と、うまくやっていけるか、一緒にいることで喧嘩しないかの不安１割で始まりました。
+                    現状、特に不満なく過ごせてます！<br>彩乃は不満ありますか、、？あれば遠慮なく言ってください！！
                 </p>
                 <div class="photo-grid">
-                    <img src="pic/memo1.JPG" alt="おまけ1">
-                    <img src="pic/memo2.JPG" alt="おまけ2">
-                    <img src="pic/memo3.JPG" alt="おまけ3">
+                    <img src="pic/2024/omake1.JPG" alt="おまけ1">
+                    <img src="pic/2024/omake2.JPG" alt="おまけ2">
+                    <img src="pic/2024/omake03.JPG" alt="おまけ3">
                 </div>
             </div>
         </div>
