@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>オフライン</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Arial', 'Hiragino Sans', 'Meiryo', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .offline-card {
+            background: white;
+            border-radius: 20px;
+            padding: 60px 40px;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+            max-width: 400px;
+            width: 100%;
+        }
+        .offline-icon {
+            font-size: 64px;
+            margin-bottom: 20px;
+        }
+        h1 {
+            color: #333;
+            font-size: 24px;
+            margin-bottom: 16px;
+        }
+        p {
+            color: #666;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+        .btn-retry {
+            display: inline-block;
+            margin-top: 24px;
+            padding: 12px 32px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="offline-card">
+        <div class="offline-icon">&#128268;</div>
+        <h1>オフラインです</h1>
+        <p>インターネットに接続されていません。<br>接続を確認してからもう一度お試しください。</p>
+        <button class="btn-retry" onclick="location.reload()">再読み込み</button>
+    </div>
+</body>
+</html>

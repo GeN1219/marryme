@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2025年</title>
+    <link rel="manifest" href="../manifest.json">
+    <meta name="theme-color" content="#667eea">
+    <link rel="apple-touch-icon" href="../icon-192.svg">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #FFE4E9 0%, #FFC0CB 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-family: 'Arial', sans-serif;
+            transition: background 0.3s ease;
+            z-index: 1000;
+        }
+
+        .back-button:hover {
+            background: rgba(0, 0, 0, 0.7);
+        }
+
+        .header {
+            text-align: center;
+            padding: 60px 20px 40px;
+        }
+
+        .header h1 {
+            font-size: 48px;
+            color: #764ba2;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .header p {
+            font-size: 20px;
+            color: #666;
+        }
+
+        .timeline {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .timeline-item {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 60px;
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .timeline-item:nth-child(even) {
+            flex-direction: row-reverse;
+        }
+
+        .timeline-date {
+            min-width: 150px;
+            text-align: right;
+            padding-top: 10px;
+        }
+
+        .timeline-item:nth-child(even) .timeline-date {
+            text-align: left;
+        }
+
+        .timeline-date h3 {
+            font-size: 24px;
+            color: #764ba2;
+            margin-bottom: 5px;
+        }
+
+        .timeline-date p {
+            color: #999;
+            font-size: 14px;
+        }
+
+        .timeline-content {
+            flex: 1;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+
+
+        .timeline-content h4 {
+            font-size: 22px;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .timeline-content p {
+            line-height: 1.8;
+            color: #666;
+            font-size: 16px;
+        }
+
+        .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .photo-grid img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+
+        .photo-grid img:hover {
+            transform: scale(1.05);
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 32px;
+            }
+
+            .timeline-item {
+                flex-direction: column !important;
+                gap: 15px;
+            }
+
+            .timeline-date {
+                text-align: left !important;
+            }
+
+            .photo-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="../index.html" class="back-button">← 戻る</a>
+
+    <div class="header">
+        <h1>2025年</h1>
+        <p>　</p>
+    </div>
+
+    <div class="timeline">
+        <div class="timeline-item">
+            <div class="timeline-date">
+                <h3>2025.07.06</h3>
+                <p>sakuchan</p>
+            </div>
+            <div class="timeline-content">
+                <h4>大原櫻子</h4>
+                <p>
+                    さくちゃんのライブ！（野球）<br>
+                    試合は負けちゃったけど、彩乃にライブの雰囲気を知ってもらえてよかった！
+                    <br>さくちゃんのライブ取れそうだったら取るから行こうね！
+                </p>
+                <div class="photo-grid">
+                    <img src="pic/2025/0706_01.JPG" alt="さく１">
+                    <img src="pic/2025/0706_02.JPG" alt="さく２">
+                </div>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <div class="timeline-date">
+                <h3>2025.07.16</h3>
+                <p>first expo</p>
+            </div>
+            <div class="timeline-content">
+                <h4>万博１回目！</h4>
+                <p>
+                    やってきました大阪・関西万博１回目です！<br>
+                    全然並ばなかった入場即フランス館。暑くて逃げ入ったコモンズ。抽選当たって大充実だった大阪ヘルスケア。入場券譲ってもらったガンダム。<br>
+                    いっぱい食べて、歩いて、大満足の１回目でした！<br>
+                    あの時は混んでるって思ってたけど、今思えばガラガラでもっと回っておけばよかったね、、笑
+                </p>
+                <div class="photo-grid">
+                    <img src="pic/2025/0716_01.JPG" alt="万博１">
+                    <img src="pic/2025/0716_02.JPG" alt="万博２">
+                    <img src="pic/2025/0716_03.JPG" alt="万博３">
+                </div>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <div class="timeline-date">
+                <h3>2025.08.05~11</h3>
+                <p>Hokkaido</p>
+            </div>
+            <div class="timeline-content">
+                <h4>北海道というかほぼエスコン</h4>
+                <p>
+                    初エスコン！！１２球場制覇だね！！<br>
+                    野球特設ページを作りたいから、あんまりこっちには野球の話は載っけてないけど、北海道は載せなきゃね。<br>
+                    さすがの北海道。球場内で食べるものが盛り沢山すぎて食べてばっかだった。ホテルも奮発して大谷ダルビッシュスイート！
+                    試合ある日にも泊まってみたいね。<br>
+                    試合なくても、やることいっぱいすぎてずっとエスコンにいたね笑
+                    <br>
+                    エスコン以外でも、大雨で大惨事目前だったトリトン（お寿司）、小樽で食べ歩きと初人力車！
+                    <br>
+                    大充実でした！また北海道行こうね！次は函館！！
+
+                </p>
+                <div class="photo-grid">
+                    <!-- <img src="pic/2025/0806_01.JPG" alt="北海道１"> -->
+                    <img src="pic/2025/0806_02.JPG" alt="北海道２">
+                    <img src="pic/2025/0806_03.JPG" alt="北海道３">
+                    <!-- <img src="pic/2025/0806_04.JPG" alt="北海道４"> -->
+                    <img src="pic/2025/0806_05.JPG" alt="北海道５">
+                </div>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <div class="timeline-date">
+                <h3>2025.09.13</h3>
+                <p>2nd expo</p>
+            </div>
+            <div class="timeline-content">
+                <h4>万博２回目！</h4>
+                <p>
+                    やってきました。２回目の大阪・関西万博。
+                    <br>２回目は前回行けなかったアメリカ館に絶対行くという心持ちで臨みました。<br>
+                    人が多すぎて並ばせてもくれなかったけど、粘ってようやく行けました！笑<br>
+                    大屋根リングで見た大迫力の花火綺麗だったね。あいにくの天気でドローンショーは見れなくて残念だったけど、、
+                </p>
+                <div class="photo-grid">
+                    <img src="pic/2025/0913_01.JPG" alt="２万博１">
+                    <img src="pic/2025/0913_02.JPG" alt="２万博２">
+                </div>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <div class="timeline-date">
+                <h3>2025.10.12</h3>
+                <p>final expo</p>
+            </div>
+            <div class="timeline-content">
+                <h4>３回目　最後の万博！</h4>
+                <p>
+                    万博３回目！最終日の前日だったから、予想通りで人がいっぱいでした。<br>
+                    ３回目の目的はドイツ館！ソーセージめっちゃ美味しかった！サーキュラーちゃんも仲間に入れられて満足！<br>
+                    彩乃希望で抽選当てられたパソナ館！パソナ館、淡路島に移動したのと、淡路島に万博モチーフのホテルが出来たらしいから、時間が合えば行きたいな。<br>
+                    万博の心残りといえばイタリア館に行けなかったことかな？イタリア館もどこかの美術館に一部移動になってるとからしいから行けそうだったら行きましょう！
+                </p>
+                <div class="photo-grid">
+                    <img src="pic/2025/1012_01.JPG" alt="３万博１">
+                    <img src="pic/2025/1012_02.JPG" alt="３万博２">
+                </div>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <div class="timeline-date">
+                <h3>2025.11.08~10</h3>
+                <p>First time abroad</p>
+            </div>
+            <div class="timeline-content">
+                <h4>初！海外ディズニー！</h4>
+                <p>
+                    彩乃初めての海外旅行！そして初めての海外ディズニー！上海！<br>
+                    初めてづくしで言語も不安だらけだったけどなんとかなった！<br>
+                    豫園が想像以上の満足度だったし、ディズニーも比較的空いてて良かった！<br>
+                    頭にいっぱい付けれたし、ズートピアもカリブもトロンもいっぱい行けてよかった！また行きたいと思ったけど、彩乃はどうかな、、？<br>
+                    色々な国に旅行行きたいから、行きたい国、行きたいところあったら、どしどし言ってください！計画立てます！！
+                </p>
+                <div class="photo-grid">
+                    <img src="pic/2025/1108_01.JPG" alt="上海１">
+                    <img src="pic/2025/1108_02.JPG" alt="上海２">
+                </div>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <div class="timeline-date">
+                <h3>2025.12.13</h3>
+                <p>First time live/p>
+            </div>
+            <div class="timeline-content">
+                <h4>初！ライブ！</h4>
+                <p>
+                    彩乃初めてのガチライブ！<br>
+                    興味ないのに着いてきてくれて、勉強してくれてありがとう！次はわかるアーティストのライブに行きましょう！<br>
+                    ついでに八景島シーパラダイス。水族館マニアとして水族館は行かなきゃだね！笑<br>
+                    水族館の記録も別サイトにまとめようとしてるからお楽しみに！！
+                </p>
+                <div class="photo-grid">
+                    <img src="pic/2025/1213_01.JPG" alt="かわ１">
+                    <img src="pic/2025/1213_02.JPG" alt="かわ２">
+                </div>
+            </div>
+        </div>
+<!-- 
+        <div class="timeline-item">
+            <div class="timeline-date">
+                <h3>おまけ</h3>
+                <p>pictures</p>
+            </div>
+            <div class="timeline-content">
+                <h4>おまけの写真</h4>
+                <p>
+
+                </p>
+                <div class="photo-grid">
+                    <img src="pic/memo1.JPG" alt="おまけ1">
+                    <img src="pic/memo2.JPG" alt="おまけ2">
+                    <img src="pic/memo3.JPG" alt="おまけ3">
+                </div>
+            </div>
+        </div> -->
+
+    </div>
+    <!-- Service Worker 登録 -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('../sw.js');
+        }
+    </script>
+</body>
+</html>

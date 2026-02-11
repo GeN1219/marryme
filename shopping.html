@@ -1,0 +1,1026 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>お買い物リスト</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#667eea">
+    <link rel="apple-touch-icon" href="icon-192.svg">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', 'Hiragino Sans', 'Meiryo', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        /* ハンバーガーメニュー（index.htmlと共通） */
+        .hamburger {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            z-index: 1000;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 5px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 6px;
+            padding: 8px;
+            transition: background 0.3s ease;
+        }
+
+        .hamburger:hover {
+            background: rgba(0, 0, 0, 0.7);
+        }
+
+        .hamburger span {
+            width: 100%;
+            height: 3px;
+            background: white;
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(7px, 7px);
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -7px);
+        }
+
+        .menu {
+            position: fixed;
+            top: 0;
+            right: -300px;
+            width: 300px;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 999;
+            transition: right 0.3s ease;
+            padding-top: 80px;
+        }
+
+        .menu.active {
+            right: 0;
+        }
+
+        .menu-item {
+            display: block;
+            color: white;
+            text-decoration: none;
+            padding: 20px 30px;
+            font-size: 24px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            transition: background 0.3s ease;
+        }
+
+        .menu-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* ヘッダー */
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            color: white;
+            font-size: 36px;
+            text-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            margin-bottom: 10px;
+        }
+
+        /* 商品追加フォーム */
+        .add-form {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            margin-bottom: 20px;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .form-row input[type="text"] {
+            flex: 1;
+            min-width: 150px;
+            padding: 12px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 16px;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-row input[type="text"]:focus {
+            border-color: #667eea;
+        }
+
+        .form-row input[type="number"] {
+            width: 70px;
+            padding: 12px 10px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 16px;
+            text-align: center;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-row input[type="number"]:focus {
+            border-color: #667eea;
+        }
+
+        .form-row select {
+            padding: 12px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 16px;
+            outline: none;
+            background: white;
+            cursor: pointer;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-row select:focus {
+            border-color: #667eea;
+        }
+
+        .btn-add {
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .btn-add:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-add:active {
+            transform: translateY(0);
+        }
+
+        /* フィルター・アクションバー */
+        .action-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .filter-buttons {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 6px 14px;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            border-radius: 20px;
+            background: transparent;
+            color: white;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn.active {
+            background: white;
+            color: #667eea;
+            border-color: white;
+        }
+
+        .filter-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .filter-btn.active:hover {
+            background: white;
+        }
+
+        .btn-clear-checked {
+            padding: 8px 16px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            border-radius: 20px;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-clear-checked:hover {
+            background: rgba(255, 82, 82, 0.8);
+            border-color: rgba(255, 82, 82, 0.8);
+        }
+
+        /* リスト表示 */
+        .shopping-list {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            min-height: 100px;
+        }
+
+        .empty-message {
+            text-align: center;
+            color: #aaa;
+            font-size: 16px;
+            padding: 40px 20px;
+        }
+
+        .list-item {
+            display: flex;
+            align-items: center;
+            padding: 16px;
+            margin-bottom: 8px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .list-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .list-item:hover {
+            background: #e9ecef;
+        }
+
+        .list-item.checked {
+            opacity: 0.5;
+        }
+
+        .list-item.checked .item-name {
+            text-decoration: line-through;
+            color: #999;
+        }
+
+        /* チェックボックス */
+        .item-checkbox {
+            width: 24px;
+            height: 24px;
+            min-width: 24px;
+            border: 3px solid #667eea;
+            border-radius: 6px;
+            margin-right: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .list-item.checked .item-checkbox {
+            background: #667eea;
+        }
+
+        .list-item.checked .item-checkbox::after {
+            content: '\2713';
+            color: white;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        /* アイテム情報 */
+        .item-info {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .item-name {
+            font-size: 16px;
+            color: #333;
+            word-break: break-all;
+        }
+
+        .item-quantity {
+            font-size: 13px;
+            color: #667eea;
+            background: rgba(102, 126, 234, 0.1);
+            padding: 2px 10px;
+            border-radius: 10px;
+            white-space: nowrap;
+        }
+
+        .item-category {
+            display: inline-block;
+            padding: 2px 10px;
+            border-radius: 10px;
+            font-size: 11px;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        .item-category.food { background: #ffeaa7; color: #b8860b; }
+        .item-category.daily { background: #dfe6e9; color: #636e72; }
+        .item-category.snack { background: #fab1a0; color: #e17055; }
+        .item-category.drink { background: #a29bfe; color: #6c5ce7; }
+        .item-category.other { background: #81ecec; color: #00838f; }
+
+        /* アクションボタン */
+        .item-actions {
+            display: flex;
+            gap: 6px;
+            margin-left: 10px;
+        }
+
+        .btn-edit,
+        .btn-delete {
+            width: 32px;
+            height: 32px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+
+        .btn-edit {
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+
+        .btn-edit:hover {
+            background: #bbdefb;
+        }
+
+        .btn-delete {
+            background: #ffebee;
+            color: #d32f2f;
+        }
+
+        .btn-delete:hover {
+            background: #ffcdd2;
+        }
+
+        /* 編集モーダル */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal h3 {
+            margin-bottom: 20px;
+            color: #333;
+            font-size: 20px;
+        }
+
+        .modal-field {
+            margin-bottom: 16px;
+        }
+
+        .modal-field label {
+            display: block;
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 6px;
+        }
+
+        .modal-field input,
+        .modal-field select {
+            width: 100%;
+            padding: 10px 14px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            outline: none;
+        }
+
+        .modal-field input:focus,
+        .modal-field select:focus {
+            border-color: #667eea;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+            margin-top: 20px;
+        }
+
+        .btn-cancel {
+            padding: 10px 20px;
+            background: #e0e0e0;
+            color: #666;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        .btn-cancel:hover {
+            background: #d0d0d0;
+        }
+
+        .btn-save {
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .btn-save:hover {
+            transform: translateY(-1px);
+        }
+
+        /* 接続ステータス */
+        .status-indicator {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            color: white;
+            z-index: 1000;
+            transition: opacity 0.3s ease;
+        }
+
+        .status-indicator.connected {
+            background: rgba(76, 175, 80, 0.8);
+        }
+
+        .status-indicator.disconnected {
+            background: rgba(244, 67, 54, 0.8);
+        }
+
+        /* レスポンシブ */
+        @media (max-width: 768px) {
+            body {
+                padding: 20px 12px;
+            }
+
+            .header h1 {
+                font-size: 28px;
+            }
+
+            .add-form {
+                padding: 16px;
+            }
+
+            .form-row {
+                flex-direction: column;
+            }
+
+            .form-row input[type="text"],
+            .form-row input[type="number"],
+            .form-row select {
+                width: 100%;
+            }
+
+            .btn-add {
+                width: 100%;
+            }
+
+            .shopping-list {
+                padding: 12px;
+            }
+
+            .list-item {
+                padding: 12px;
+            }
+
+            .item-actions {
+                margin-left: 6px;
+            }
+
+            .action-bar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- ハンバーガーメニュー（index.htmlと共通構造） -->
+    <div class="hamburger" id="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+
+    <div class="menu" id="menu">
+        <a href="index.html" class="menu-item">ホーム</a>
+        <a href="bucketlist.html" class="menu-item">やりたいことリスト</a>
+        <a href="shopping.html" class="menu-item">お買い物リスト</a>
+        <a href="https://gen1219.github.io/AG-history/" class="menu-item" target="_blank">history</a>
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <h1>お買い物リスト</h1>
+        </div>
+
+        <!-- 商品追加フォーム -->
+        <div class="add-form">
+            <div class="form-row">
+                <input type="text" id="itemName" placeholder="商品名を入力..." autocomplete="off">
+                <input type="number" id="itemQuantity" value="1" min="1" max="99">
+                <select id="itemCategory">
+                    <option value="">カテゴリ</option>
+                    <option value="food">食品</option>
+                    <option value="daily">日用品</option>
+                    <option value="snack">お菓子</option>
+                    <option value="drink">飲み物</option>
+                    <option value="other">その他</option>
+                </select>
+                <button class="btn-add" id="btnAdd">追加</button>
+            </div>
+        </div>
+
+        <!-- フィルター・アクションバー -->
+        <div class="action-bar">
+            <div class="filter-buttons">
+                <button class="filter-btn active" data-filter="all">すべて</button>
+                <button class="filter-btn" data-filter="food">食品</button>
+                <button class="filter-btn" data-filter="daily">日用品</button>
+                <button class="filter-btn" data-filter="snack">お菓子</button>
+                <button class="filter-btn" data-filter="drink">飲み物</button>
+                <button class="filter-btn" data-filter="other">その他</button>
+            </div>
+            <button class="btn-clear-checked" id="btnClearChecked">チェック済みを削除</button>
+        </div>
+
+        <!-- リスト表示エリア -->
+        <div class="shopping-list" id="shoppingList">
+            <div class="empty-message" id="emptyMessage">リストにアイテムがありません</div>
+        </div>
+    </div>
+
+    <!-- 編集モーダル -->
+    <div class="modal-overlay" id="editModal">
+        <div class="modal">
+            <h3>アイテムを編集</h3>
+            <div class="modal-field">
+                <label>商品名</label>
+                <input type="text" id="editName">
+            </div>
+            <div class="modal-field">
+                <label>数量</label>
+                <input type="number" id="editQuantity" min="1" max="99">
+            </div>
+            <div class="modal-field">
+                <label>カテゴリ</label>
+                <select id="editCategory">
+                    <option value="">なし</option>
+                    <option value="food">食品</option>
+                    <option value="daily">日用品</option>
+                    <option value="snack">お菓子</option>
+                    <option value="drink">飲み物</option>
+                    <option value="other">その他</option>
+                </select>
+            </div>
+            <div class="modal-buttons">
+                <button class="btn-cancel" id="btnCancelEdit">キャンセル</button>
+                <button class="btn-save" id="btnSaveEdit">保存</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 接続ステータス表示 -->
+    <div class="status-indicator" id="statusIndicator"></div>
+
+    <!-- Service Worker 登録 -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js');
+        }
+    </script>
+
+    <!-- Supabase JS クライアント（CDN） -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- Supabase 接続情報 -->
+    <script src="config.js"></script>
+    <script>
+        // ==========================================
+        // Supabase クライアント初期化
+        // ==========================================
+        const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        // DOM要素の取得
+        const hamburger = document.getElementById('hamburger');
+        const menu = document.getElementById('menu');
+        const itemNameInput = document.getElementById('itemName');
+        const itemQuantityInput = document.getElementById('itemQuantity');
+        const itemCategorySelect = document.getElementById('itemCategory');
+        const btnAdd = document.getElementById('btnAdd');
+        const shoppingList = document.getElementById('shoppingList');
+        const emptyMessage = document.getElementById('emptyMessage');
+        const btnClearChecked = document.getElementById('btnClearChecked');
+        const editModal = document.getElementById('editModal');
+        const editNameInput = document.getElementById('editName');
+        const editQuantityInput = document.getElementById('editQuantity');
+        const editCategorySelect = document.getElementById('editCategory');
+        const btnCancelEdit = document.getElementById('btnCancelEdit');
+        const btnSaveEdit = document.getElementById('btnSaveEdit');
+        const statusIndicator = document.getElementById('statusIndicator');
+
+        // 現在のフィルター
+        let currentFilter = 'all';
+        // 編集中のアイテムID
+        let editingItemId = null;
+        // アイテムデータのローカルキャッシュ
+        let items = [];
+
+        // ==========================================
+        // ハンバーガーメニュー（index.htmlと同じ動作）
+        // ==========================================
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            menu.classList.toggle('active');
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!hamburger.contains(e.target) && !menu.contains(e.target)) {
+                hamburger.classList.remove('active');
+                menu.classList.remove('active');
+            }
+        });
+
+        // ==========================================
+        // カテゴリ表示名マッピング
+        // ==========================================
+        const categoryLabels = {
+            food: '食品',
+            daily: '日用品',
+            snack: 'お菓子',
+            drink: '飲み物',
+            other: 'その他'
+        };
+
+        // ==========================================
+        // データ取得（初期ロード）
+        // ==========================================
+        async function fetchItems() {
+            const { data, error } = await supabaseClient
+                .from('shopping_items')
+                .select('*')
+                .order('created_at', { ascending: true });
+
+            if (error) {
+                console.error('データ取得エラー:', error);
+                return;
+            }
+
+            items = data || [];
+            renderList();
+        }
+
+        // ==========================================
+        // リスト描画
+        // ==========================================
+        function renderList() {
+            // フィルタリング
+            const filtered = currentFilter === 'all'
+                ? items
+                : items.filter(item => item.category === currentFilter);
+
+            // 空メッセージの表示制御
+            if (filtered.length === 0) {
+                emptyMessage.style.display = 'block';
+            } else {
+                emptyMessage.style.display = 'none';
+            }
+
+            // 既存のアイテム要素を削除（空メッセージ以外）
+            const existingItems = shoppingList.querySelectorAll('.list-item');
+            existingItems.forEach(el => el.remove());
+
+            // 未チェックを先に、チェック済みを後に表示
+            const sorted = [...filtered].sort((a, b) => {
+                if (a.is_checked !== b.is_checked) return a.is_checked ? 1 : -1;
+                return new Date(a.created_at) - new Date(b.created_at);
+            });
+
+            // アイテムを描画
+            sorted.forEach(item => {
+                const el = createItemElement(item);
+                shoppingList.appendChild(el);
+            });
+        }
+
+        // ==========================================
+        // アイテム要素を生成
+        // ==========================================
+        function createItemElement(item) {
+            const div = document.createElement('div');
+            div.className = 'list-item' + (item.is_checked ? ' checked' : '');
+            div.dataset.id = item.id;
+
+            // カテゴリバッジのHTML
+            let categoryHtml = '';
+            if (item.category && categoryLabels[item.category]) {
+                categoryHtml = `<span class="item-category ${item.category}">${categoryLabels[item.category]}</span>`;
+            }
+
+            // 数量表示
+            const quantityHtml = item.quantity > 1
+                ? `<span class="item-quantity">&times;${item.quantity}</span>`
+                : '';
+
+            div.innerHTML = `
+                <div class="item-checkbox" data-id="${item.id}"></div>
+                <div class="item-info">
+                    <span class="item-name">${escapeHtml(item.name)}</span>
+                    ${quantityHtml}
+                    ${categoryHtml}
+                </div>
+                <div class="item-actions">
+                    <button class="btn-edit" data-id="${item.id}" title="編集">&#9998;</button>
+                    <button class="btn-delete" data-id="${item.id}" title="削除">&#10005;</button>
+                </div>
+            `;
+
+            // チェックボックスのクリックイベント
+            div.querySelector('.item-checkbox').addEventListener('click', () => {
+                toggleCheck(item.id, !item.is_checked);
+            });
+
+            // 編集ボタン
+            div.querySelector('.btn-edit').addEventListener('click', () => {
+                openEditModal(item);
+            });
+
+            // 削除ボタン
+            div.querySelector('.btn-delete').addEventListener('click', () => {
+                deleteItem(item.id);
+            });
+
+            return div;
+        }
+
+        // HTMLエスケープ
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // ==========================================
+        // 商品追加
+        // ==========================================
+        async function addItem() {
+            const name = itemNameInput.value.trim();
+            if (!name) return;
+
+            const quantity = parseInt(itemQuantityInput.value) || 1;
+            const category = itemCategorySelect.value || null;
+
+            const { error } = await supabaseClient
+                .from('shopping_items')
+                .insert([{ name, quantity, category }]);
+
+            if (error) {
+                console.error('追加エラー:', error);
+                return;
+            }
+
+            // フォームリセット
+            itemNameInput.value = '';
+            itemQuantityInput.value = '1';
+            itemCategorySelect.value = '';
+            itemNameInput.focus();
+        }
+
+        // 追加ボタンのクリック
+        btnAdd.addEventListener('click', addItem);
+
+        // Enterキーでも追加可能
+        itemNameInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') addItem();
+        });
+
+        // ==========================================
+        // チェック状態のトグル
+        // ==========================================
+        async function toggleCheck(id, checked) {
+            const { error } = await supabaseClient
+                .from('shopping_items')
+                .update({ is_checked: checked })
+                .eq('id', id);
+
+            if (error) {
+                console.error('更新エラー:', error);
+            }
+        }
+
+        // ==========================================
+        // アイテム削除
+        // ==========================================
+        async function deleteItem(id) {
+            const { error } = await supabaseClient
+                .from('shopping_items')
+                .delete()
+                .eq('id', id);
+
+            if (error) {
+                console.error('削除エラー:', error);
+            }
+        }
+
+        // ==========================================
+        // チェック済みアイテムの一括削除
+        // ==========================================
+        btnClearChecked.addEventListener('click', async () => {
+            const checkedItems = items.filter(item => item.is_checked);
+            if (checkedItems.length === 0) return;
+
+            if (!confirm(`チェック済みの${checkedItems.length}件を削除しますか？`)) return;
+
+            const { error } = await supabaseClient
+                .from('shopping_items')
+                .delete()
+                .eq('is_checked', true);
+
+            if (error) {
+                console.error('一括削除エラー:', error);
+            }
+        });
+
+        // ==========================================
+        // 編集モーダル
+        // ==========================================
+        function openEditModal(item) {
+            editingItemId = item.id;
+            editNameInput.value = item.name;
+            editQuantityInput.value = item.quantity;
+            editCategorySelect.value = item.category || '';
+            editModal.classList.add('active');
+        }
+
+        btnCancelEdit.addEventListener('click', () => {
+            editModal.classList.remove('active');
+            editingItemId = null;
+        });
+
+        // モーダル外クリックで閉じる
+        editModal.addEventListener('click', (e) => {
+            if (e.target === editModal) {
+                editModal.classList.remove('active');
+                editingItemId = null;
+            }
+        });
+
+        btnSaveEdit.addEventListener('click', async () => {
+            if (!editingItemId) return;
+
+            const name = editNameInput.value.trim();
+            if (!name) return;
+
+            const quantity = parseInt(editQuantityInput.value) || 1;
+            const category = editCategorySelect.value || null;
+
+            const { error } = await supabaseClient
+                .from('shopping_items')
+                .update({ name, quantity, category })
+                .eq('id', editingItemId);
+
+            if (error) {
+                console.error('編集エラー:', error);
+                return;
+            }
+
+            editModal.classList.remove('active');
+            editingItemId = null;
+        });
+
+        // ==========================================
+        // フィルターボタン
+        // ==========================================
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentFilter = btn.dataset.filter;
+                renderList();
+            });
+        });
+
+        // ==========================================
+        // Supabase Realtime サブスクリプション
+        // 他端末での変更をリアルタイムに反映
+        // ==========================================
+        const channel = supabaseClient
+            .channel('shopping-changes')
+            .on(
+                'postgres_changes',
+                { event: '*', schema: 'public', table: 'shopping_items' },
+                (payload) => {
+                    switch (payload.eventType) {
+                        case 'INSERT':
+                            // 新規アイテムをローカルキャッシュに追加
+                            items.push(payload.new);
+                            renderList();
+                            break;
+                        case 'UPDATE':
+                            // ローカルキャッシュを更新
+                            items = items.map(item =>
+                                item.id === payload.new.id ? payload.new : item
+                            );
+                            renderList();
+                            break;
+                        case 'DELETE':
+                            // ローカルキャッシュから削除
+                            items = items.filter(item => item.id !== payload.old.id);
+                            renderList();
+                            break;
+                    }
+                }
+            )
+            .subscribe((status) => {
+                // 接続ステータスの表示
+                if (status === 'SUBSCRIBED') {
+                    statusIndicator.textContent = 'リアルタイム接続中';
+                    statusIndicator.className = 'status-indicator connected';
+                    // 3秒後に非表示
+                    setTimeout(() => {
+                        statusIndicator.style.opacity = '0';
+                    }, 3000);
+                } else if (status === 'CLOSED' || status === 'CHANNEL_ERROR') {
+                    statusIndicator.textContent = '接続が切断されました';
+                    statusIndicator.className = 'status-indicator disconnected';
+                    statusIndicator.style.opacity = '1';
+                }
+            });
+
+        // ==========================================
+        // 初期データ読み込み
+        // ==========================================
+        fetchItems();
+    </script>
+</body>
+</html>
