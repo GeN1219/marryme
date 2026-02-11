@@ -1,0 +1,4 @@
+// Supabase 接続情報
+// このファイルは .gitignore に追加済みです
+const SUPABASE_URL = 'https://iepaknxkkxqswtukhhkf.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImllcGFrbnhra3hxc3d0dWtoaGtmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA3Njg4NjIsImV4cCI6MjA4NjM0NDg2Mn0.1xeKkylb6kEVos-33wIaje6Mz5lqpQMdAOeUpa0DGRM';
