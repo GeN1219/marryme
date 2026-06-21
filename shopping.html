@@ -196,45 +196,14 @@
             transform: translateY(0);
         }
 
-        /* フィルター・アクションバー */
+        /* アクションバー */
         .action-bar {
             display: flex;
-            justify-content: space-between;
+            justify-content: flex-end;
             align-items: center;
             margin-bottom: 16px;
             flex-wrap: wrap;
             gap: 10px;
-        }
-
-        .filter-buttons {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
-
-        .filter-btn {
-            padding: 6px 14px;
-            border: 2px solid rgba(255, 255, 255, 0.5);
-            border-radius: 20px;
-            background: transparent;
-            color: white;
-            font-size: 13px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .filter-btn.active {
-            background: white;
-            color: #667eea;
-            border-color: white;
-        }
-
-        .filter-btn:hover {
-            background: rgba(255, 255, 255, 0.2);
-        }
-
-        .filter-btn.active:hover {
-            background: white;
         }
 
         .btn-clear-checked {
@@ -346,20 +315,16 @@
             white-space: nowrap;
         }
 
-        .item-category {
+        .item-store {
             display: inline-block;
             padding: 2px 10px;
             border-radius: 10px;
             font-size: 11px;
             font-weight: bold;
             white-space: nowrap;
+            background: #e8f5e9;
+            color: #2e7d32;
         }
-
-        .item-category.food { background: #ffeaa7; color: #b8860b; }
-        .item-category.daily { background: #dfe6e9; color: #636e72; }
-        .item-category.snack { background: #fab1a0; color: #e17055; }
-        .item-category.drink { background: #a29bfe; color: #6c5ce7; }
-        .item-category.other { background: #81ecec; color: #00838f; }
 
         /* アクションボタン */
         .item-actions {
@@ -590,28 +555,13 @@
             <div class="form-row">
                 <input type="text" id="itemName" placeholder="商品名を入力..." autocomplete="off">
                 <input type="number" id="itemQuantity" value="1" min="1" max="99">
-                <select id="itemCategory">
-                    <option value="">カテゴリ</option>
-                    <option value="food">食品</option>
-                    <option value="daily">日用品</option>
-                    <option value="snack">お菓子</option>
-                    <option value="drink">飲み物</option>
-                    <option value="other">その他</option>
-                </select>
+                <input type="text" id="itemStore" placeholder="買うところ" autocomplete="off">
                 <button class="btn-add" id="btnAdd">追加</button>
             </div>
         </div>
 
-        <!-- フィルター・アクションバー -->
+        <!-- アクションバー -->
         <div class="action-bar">
-            <div class="filter-buttons">
-                <button class="filter-btn active" data-filter="all">すべて</button>
-                <button class="filter-btn" data-filter="food">食品</button>
-                <button class="filter-btn" data-filter="daily">日用品</button>
-                <button class="filter-btn" data-filter="snack">お菓子</button>
-                <button class="filter-btn" data-filter="drink">飲み物</button>
-                <button class="filter-btn" data-filter="other">その他</button>
-            </div>
             <button class="btn-clear-checked" id="btnClearChecked">チェック済みを削除</button>
         </div>
 
@@ -634,15 +584,8 @@
                 <input type="number" id="editQuantity" min="1" max="99">
             </div>
             <div class="modal-field">
-                <label>カテゴリ</label>
-                <select id="editCategory">
-                    <option value="">なし</option>
-                    <option value="food">食品</option>
-                    <option value="daily">日用品</option>
-                    <option value="snack">お菓子</option>
-                    <option value="drink">飲み物</option>
-                    <option value="other">その他</option>
-                </select>
+                <label>買うところ</label>
+                <input type="text" id="editStore" placeholder="買うところ">
             </div>
             <div class="modal-buttons">
                 <button class="btn-cancel" id="btnCancelEdit">キャンセル</button>
@@ -676,7 +619,7 @@
         const menu = document.getElementById('menu');
         const itemNameInput = document.getElementById('itemName');
         const itemQuantityInput = document.getElementById('itemQuantity');
-        const itemCategorySelect = document.getElementById('itemCategory');
+        const itemStoreInput = document.getElementById('itemStore');
         const btnAdd = document.getElementById('btnAdd');
         const shoppingList = document.getElementById('shoppingList');
         const emptyMessage = document.getElementById('emptyMessage');
@@ -684,13 +627,11 @@
         const editModal = document.getElementById('editModal');
         const editNameInput = document.getElementById('editName');
         const editQuantityInput = document.getElementById('editQuantity');
-        const editCategorySelect = document.getElementById('editCategory');
+        const editStoreInput = document.getElementById('editStore');
         const btnCancelEdit = document.getElementById('btnCancelEdit');
         const btnSaveEdit = document.getElementById('btnSaveEdit');
         const statusIndicator = document.getElementById('statusIndicator');
 
-        // 現在のフィルター
-        let currentFilter = 'all';
         // 編集中のアイテムID
         let editingItemId = null;
         // アイテムデータのローカルキャッシュ
@@ -710,17 +651,6 @@
                 menu.classList.remove('active');
             }
         });
-
-        // ==========================================
-        // カテゴリ表示名マッピング
-        // ==========================================
-        const categoryLabels = {
-            food: '食品',
-            daily: '日用品',
-            snack: 'お菓子',
-            drink: '飲み物',
-            other: 'その他'
-        };
 
         // ==========================================
         // データ取得（初期ロード）
@@ -744,10 +674,7 @@
         // リスト描画
         // ==========================================
         function renderList() {
-            // フィルタリング
-            const filtered = currentFilter === 'all'
-                ? items
-                : items.filter(item => item.category === currentFilter);
+            const filtered = items;
 
             // 空メッセージの表示制御
             if (filtered.length === 0) {
@@ -781,10 +708,10 @@
             div.className = 'list-item' + (item.is_checked ? ' checked' : '');
             div.dataset.id = item.id;
 
-            // カテゴリバッジのHTML
-            let categoryHtml = '';
-            if (item.category && categoryLabels[item.category]) {
-                categoryHtml = `<span class="item-category ${item.category}">${categoryLabels[item.category]}</span>`;
+            // 買うところバッジのHTML
+            let storeHtml = '';
+            if (item.store) {
+                storeHtml = `<span class="item-store">🛒 ${escapeHtml(item.store)}</span>`;
             }
 
             // 数量表示
@@ -797,7 +724,7 @@
                 <div class="item-info">
                     <span class="item-name">${escapeHtml(item.name)}</span>
                     ${quantityHtml}
-                    ${categoryHtml}
+                    ${storeHtml}
                 </div>
                 <div class="item-actions">
                     <button class="btn-edit" data-id="${item.id}" title="編集">&#9998;</button>
@@ -838,11 +765,11 @@
             if (!name) return;
 
             const quantity = parseInt(itemQuantityInput.value) || 1;
-            const category = itemCategorySelect.value || null;
+            const store = itemStoreInput.value.trim() || null;
 
             const { error } = await supabaseClient
                 .from('shopping_items')
-                .insert([{ name, quantity, category }]);
+                .insert([{ name, quantity, store }]);
 
             if (error) {
                 console.error('追加エラー:', error);
@@ -852,7 +779,7 @@
             // フォームリセット
             itemNameInput.value = '';
             itemQuantityInput.value = '1';
-            itemCategorySelect.value = '';
+            itemStoreInput.value = '';
             itemNameInput.focus();
         }
 
@@ -918,7 +845,7 @@
             editingItemId = item.id;
             editNameInput.value = item.name;
             editQuantityInput.value = item.quantity;
-            editCategorySelect.value = item.category || '';
+            editStoreInput.value = item.store || '';
             editModal.classList.add('active');
         }
 
@@ -942,11 +869,11 @@
             if (!name) return;
 
             const quantity = parseInt(editQuantityInput.value) || 1;
-            const category = editCategorySelect.value || null;
+            const store = editStoreInput.value.trim() || null;
 
             const { error } = await supabaseClient
                 .from('shopping_items')
-                .update({ name, quantity, category })
+                .update({ name, quantity, store })
                 .eq('id', editingItemId);
 
             if (error) {
@@ -956,18 +883,6 @@
 
             editModal.classList.remove('active');
             editingItemId = null;
-        });
-
-        // ==========================================
-        // フィルターボタン
-        // ==========================================
-        document.querySelectorAll('.filter-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                currentFilter = btn.dataset.filter;
-                renderList();
-            });
         });
 
         // ==========================================
