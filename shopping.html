@@ -196,6 +196,39 @@
             transform: translateY(0);
         }
 
+        /* 買うところフィルター */
+        .filter-bar {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 16px;
+        }
+
+        .filter-btn {
+            padding: 6px 14px;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            border-radius: 20px;
+            background: transparent;
+            color: white;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn.active {
+            background: white;
+            color: #667eea;
+            border-color: white;
+        }
+
+        .filter-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .filter-btn.active:hover {
+            background: white;
+        }
+
         /* アクションバー */
         .action-bar {
             display: flex;
@@ -560,6 +593,9 @@
             </div>
         </div>
 
+        <!-- 買うところフィルター（買うところごとに自動生成） -->
+        <div class="filter-bar" id="filterBar"></div>
+
         <!-- アクションバー -->
         <div class="action-bar">
             <button class="btn-clear-checked" id="btnClearChecked">チェック済みを削除</button>
@@ -623,6 +659,7 @@
         const btnAdd = document.getElementById('btnAdd');
         const shoppingList = document.getElementById('shoppingList');
         const emptyMessage = document.getElementById('emptyMessage');
+        const filterBar = document.getElementById('filterBar');
         const btnClearChecked = document.getElementById('btnClearChecked');
         const editModal = document.getElementById('editModal');
         const editNameInput = document.getElementById('editName');
@@ -636,6 +673,8 @@
         let editingItemId = null;
         // アイテムデータのローカルキャッシュ
         let items = [];
+        // 現在選択中の「買うところ」フィルター（'all' = すべて, '__none__' = 未設定）
+        let currentStore = 'all';
 
         // ==========================================
         // ハンバーガーメニュー（index.htmlと同じ動作）
@@ -671,10 +710,54 @@
         }
 
         // ==========================================
+        // 買うところフィルターボタンを生成
+        // 登録されている「買うところ」から自動でボタンを作る
+        // ==========================================
+        function renderFilterBar() {
+            // 重複を除いた買うところ一覧（あいうえお順）
+            const stores = [...new Set(items.map(item => item.store).filter(Boolean))]
+                .sort((a, b) => a.localeCompare(b, 'ja'));
+            const hasNoStore = items.some(item => !item.store);
+
+            // 選択中のフィルターが存在しなくなった場合は「すべて」に戻す
+            const validValues = new Set(['all', ...stores]);
+            if (hasNoStore) validValues.add('__none__');
+            if (!validValues.has(currentStore)) currentStore = 'all';
+
+            // ボタン生成ヘルパー
+            const makeBtn = (label, value) => {
+                const btn = document.createElement('button');
+                btn.className = 'filter-btn' + (currentStore === value ? ' active' : '');
+                btn.textContent = label;
+                btn.addEventListener('click', () => {
+                    currentStore = value;
+                    renderList();
+                });
+                return btn;
+            };
+
+            filterBar.innerHTML = '';
+            filterBar.appendChild(makeBtn('すべて', 'all'));
+            stores.forEach(store => filterBar.appendChild(makeBtn(store, store)));
+            if (hasNoStore) filterBar.appendChild(makeBtn('未設定', '__none__'));
+        }
+
+        // ==========================================
         // リスト描画
         // ==========================================
         function renderList() {
-            const filtered = items;
+            // 買うところフィルターボタンを最新の状態に更新
+            renderFilterBar();
+
+            // 選択中の「買うところ」で絞り込み
+            let filtered;
+            if (currentStore === 'all') {
+                filtered = items;
+            } else if (currentStore === '__none__') {
+                filtered = items.filter(item => !item.store);
+            } else {
+                filtered = items.filter(item => item.store === currentStore);
+            }
 
             // 空メッセージの表示制御
             if (filtered.length === 0) {
